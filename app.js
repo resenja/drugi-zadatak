@@ -3,12 +3,12 @@ const client = supabase.createClient('https://qrpjxxnyavsvmdbypowt.supabase.co',
 
 
 let i = 0;
-const messagesElement = document.querySelector('#poruke');
+const messagesElement = document.querySelector('#answers');
 const textareaElement = document.querySelector('#wmd-input');
 
 function addMessageToPage(message) {
     i++;
-    let text = message.poruka;
+    let text = message.content;
     text = text.replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;');
     const element = document.createElement('div');
     element.innerHTML = `
@@ -43,26 +43,27 @@ function addMessageToPage(message) {
     messagesElement.append(element);
 }
 async function init(){
-const { data: drugi_zadatak, error } = await client
-  .from('drugi_zadatak')
+const { data: messages, error } = await client
+  .from('messages')
   .select('*')
-drugi_zadatak.forEach(addMessageToPage);
-dodajBrojOdgovora();
+.eq('page',2)
+messages.forEach(addMessageToPage);
+addNumberOfAnswers();
 textareaElement.value ='';
 }
-function dodajBrojOdgovora() {
+function addNumberOfAnswers() {
     let s = i + " ";
     if (i != 1) s += "Answers";
     else s += "Answer";
-    document.querySelector('#broj-odgovora').append(s);
+    document.querySelector('#number-of-answers').append(s);
 }
 init();
 document.querySelector('#post-button').onclick = async function(){
 if(textareaElement.value != ''){
 const { data, error } = await client
-  .from('drugi_zadatak')
+  .from('messages')
   .insert([
-    { poruka: textareaElement.value },
+    { page: 2, content: textareaElement.value },
   ])
 location.reload();
 return false;
