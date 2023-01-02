@@ -43,10 +43,10 @@ function addMessageToPage(message) {
     messagesElement.append(element);
 }
 async function init(){
-const { data: prvi_zadatak, error } = await client
-  .from('prvi_zadatak')
+const { data: drugi_zadatak, error } = await client
+  .from('drugi_zadatak')
   .select('*')
-prvi_zadatak.forEach(addMessageToPage);
+drugi_zadatak.forEach(addMessageToPage);
 dodajBrojOdgovora();
 textareaElement.value ='';
 }
@@ -60,7 +60,7 @@ init();
 document.querySelector('#post-button').onclick = async function(){
 if(textareaElement.value != ''){
 const { data, error } = await client
-  .from('prvi_zadatak')
+  .from('drugi_zadatak')
   .insert([
     { poruka: textareaElement.value },
   ])
