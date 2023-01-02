@@ -1,1 +1,1 @@
-# drugi_zadatak
+# drugi-zadatak
